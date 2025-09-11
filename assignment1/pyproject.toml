@@ -3,11 +3,9 @@ name = "csds413-assignment1"
 version = "0.1.0"
 description = "CSDS 413 Assignment 1"
 authors = ["Jacob Anderson <janderson011903@gmail.com>"]
-readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-
 
 [build-system]
 requires = ["poetry-core"]
