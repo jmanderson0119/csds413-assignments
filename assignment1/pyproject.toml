@@ -2,10 +2,13 @@
 name = "csds413-assignment1"
 version = "0.1.0"
 description = "CSDS 413 Assignment 1"
-authors = ["Jacob Anderson <janderson011903@gmail.com>"]
+authors = ["Jacob Anderson <jma195@case.edu>", "Wiam Skakri <wxs428@case.edu>"]
 
 [tool.poetry.dependencies]
 python = "^3.12"
+pandas = "^2.3.2"
+seaborn = "^0.13.2"
+matplotlib = "^3.10.6"
 
 [build-system]
 requires = ["poetry-core"]

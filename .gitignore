@@ -5,3 +5,9 @@
 *.log
 *.out
 *.synctex.gz
+*.toc
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
