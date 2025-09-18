@@ -1,0 +1,31 @@
+\section{Normal Distribution Dataset}
+
+\subsection{Part A: Developing Hypotheses}
+Identify and collect a real-world dataset that you hypothesize follows a Normal distribution. Please be clear about the reasoning behind your hypothesis and be specific about the source of the dataset.
+
+\subsection{Part B: Fitting Distributions}
+For this exercise, we will call each of the four different theoretical distributions (normal, uniform, power law, exponential) a ``model". Fit the dataset (i.e., estimate the model parameters) against each model (not just the one you hypothesized) using maximum likelihood estimation (or using any technique you think is appropriate; make sure to comment on the validity of your approach). This should result in a total of \textbf{4 parameter sets}. Report the estimated parameters in the following tabular format:
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+& & \multicolumn{4}{c|}{{\bf{\em{Model}}}}\\
+\hline
+{{\bf{\em{Dataset}}}} & {\bf{\em{\# Observations}}} &\textbf{Normal}& \textbf{Uniform} & \textbf{Power law} & \textbf{Exponential} \\
+\hline
+\textbf{Dataset 1} & $n_1$ &  $\mu_1, \sigma_1$ & $a_1, b_1$ & $\alpha_1, x_{\min_1}$ & $\lambda_1$ \\
+\hline
+\end{tabular}
+\end{center}
+
+Be sure to show the code you used to arrive at your final estimates clearly.
+
+\subsection{Part C: Comparing Real and Synthetic Data}
+
+For each fitted distribution (there will be 4 of them for this dataset, each corresponding to a different model), generate a synthetic sample of data points equal to the sample size of the real dataset using the respective model parameters you inferred from the real dataset.\\
+
+Compare the real vs. synthetic data distributions using methods you think are the most appropriate, including visualizations. So, for this dataset, we compare the original dataset to four synthetic datasets, all with equal number of observations, but each synthetic dataset is generated using a different model.\\
+
+For this dataset, identify the synthetic dataset (which corresponds to a model) that is most similar to the original data in terms of its distribution.\\
+
+Now revisit your initial hypothesis. For this dataset: Did the dataset behave as expected, or was another model (assumed distribution) a better fit to the dataset? Reflect on why the observed results may differ from your expectations.\\  

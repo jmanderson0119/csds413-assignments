@@ -5,6 +5,3 @@
 *.log
 *.out
 *.synctex.gz
-
-// Data
-datasets/
