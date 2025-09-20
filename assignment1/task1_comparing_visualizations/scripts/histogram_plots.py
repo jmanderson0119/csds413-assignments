@@ -4,9 +4,10 @@ import os
 import seaborn as sns
 import matplotlib.ticker as mtick
 
-def histogram_plot_albums_data(input_csv: str, x: str, hue: str):
+def histogram_plot(input_csv: str, x: str, hue: str, x_label: str, y_label: str, 
+                   category: str, title: str, output_csv: str):
     """
-    Generates a histogram of album sales grouped by genre.
+    Generates a histogram.
 
     :param input_csv: Path to album_sales by genre data
     :type input_csv: str
@@ -14,6 +15,15 @@ def histogram_plot_albums_data(input_csv: str, x: str, hue: str):
     :type x: str
     :param hue: The categorical variable to group by
     :type hue: str
+    :param x_label: label for the x axis
+    :type x_label: str
+    :param y_label: label for the y axis
+    :type y_label: str
+    :param category: title for the category being grouped by
+    :param title: title for the figure
+    :type title: str
+    :param output_csv: Filename for the figure
+    :type output_csv: str
     """
     df = pd.read_csv(input_csv)
 
@@ -24,19 +34,21 @@ def histogram_plot_albums_data(input_csv: str, x: str, hue: str):
     ax = sns.histplot(data=df, x=x, hue=hue, bins=20, kde=False, multiple="stack", 
                       edgecolor="white", alpha=1.0, legend=True)
 
-    ax.xaxis.set_major_formatter(mtick.FuncFormatter(lambda x, _: f'{x/1e6:.1f}M'))
+    if df[x].max() >= 1e6: ax.xaxis.set_major_formatter(mtick.FuncFormatter(lambda x, _: f'{x/1e6:.1f}M'))
 
-    ax.set_xlabel("Album Sales", fontsize=14, labelpad=15)
-    ax.set_ylabel("Number of Albums", fontsize=14, labelpad=15)
-    ax.set_title("Histogram of Album Sales by Genre", fontsize=16, pad=20)
+    ax.set_xlabel(x_label, fontsize=14, labelpad=15)
+    ax.set_ylabel(y_label, fontsize=14, labelpad=15)
+    ax.set_title(title, fontsize=16, pad=20)
 
     if ax.get_legend() is not None:
         legend = ax.get_legend()
-        legend.set_title("Genre")
+        legend.set_title(category)
         for text in legend.get_texts():
             text.set_fontsize(11)
         legend.get_title().set_fontsize(12)
 
     plt.tight_layout()
     os.makedirs("../figures", exist_ok=True)
-    plt.savefig("../figures/album_sales_by_genre_histogram_plot.png", bbox_inches='tight', dpi=300)
+    plt.savefig(f"../figures/{output_csv}", bbox_inches='tight', dpi=300)
+
+histogram_plot('../datasets/clean/algo_accuracy_by_epoch.csv', 'accuracy', 'algorithm', 'Accuracies', 'Frequency of Accuracies', 'Algorithm', 'Histogram of Accuracies by Algorithm', 'algo_accuracy_by_epoch_histogram_plot.png')
