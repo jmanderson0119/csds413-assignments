@@ -20,5 +20,3 @@ def clean_iris_data(input_csv: str, output_csv: str) -> pd.DataFrame:
     df.to_csv(f'../datasets/normal/clean/{output_csv}', index=False)
 
     return df
-
-clean_iris_data('../datasets/normal/raw/iris.csv', 'sepal_width.csv')
