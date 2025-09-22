@@ -49,6 +49,3 @@ def error_bar_plot(input_csv: str, x: str, y: str, x_label: str, y_label: str,
     plt.tight_layout()
     os.makedirs("../figures", exist_ok=True)
     plt.savefig(f"../figures/{output_csv}", bbox_inches='tight', dpi=300)
-
-error_bar_plot('../datasets/clean/algo_accuracy_by_epoch.csv', 'epoch', 'accuracy', 'Epochs', 'Accuracy', 'Mean Accuracy across Epochs', '../figures/algo_accuracy_by_epoch_error_bar_plot.png', 'algorithm')
-

@@ -50,5 +50,3 @@ def strip_plot(input_csv: str, x: str, y: str,
 
     os.makedirs("../figures", exist_ok=True)
     plt.savefig(f"../figures/{output_csv}", bbox_inches='tight', dpi=300)
-
-strip_plot('../datasets/clean/algo_accuracy_by_epoch.csv', 'epoch', 'accuracy', 'Epochs', 'Accuracy', 'Distribution of Accuracies across Epochs', 'algo_accuracy_by_epoch_strip_plot.png', 'algorithm')

@@ -50,5 +50,3 @@ def histogram_plot(input_csv: str, x: str, hue: str, x_label: str, y_label: str,
     plt.tight_layout()
     os.makedirs("../figures", exist_ok=True)
     plt.savefig(f"../figures/{output_csv}", bbox_inches='tight', dpi=300)
-
-histogram_plot('../datasets/clean/algo_accuracy_by_epoch.csv', 'accuracy', 'algorithm', 'Accuracies', 'Frequency of Accuracies', 'Algorithm', 'Histogram of Accuracies by Algorithm', 'algo_accuracy_by_epoch_histogram_plot.png')

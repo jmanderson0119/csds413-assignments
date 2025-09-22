@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 
-def clean_preprocess_albums_data(input_csv: str, output_csv: str) -> pd.DataFrame:
+def clean_preprocess_albums_data(input_csv: str, output_csv: str):
     """
     Cleans and preprocesses the albums dataset by removing irrelevant
     features and data points, handling missing/invalid values, standardizing
@@ -33,9 +33,8 @@ def clean_preprocess_albums_data(input_csv: str, output_csv: str) -> pd.DataFram
 
     os.makedirs(f'../datasets/clean/', exist_ok=True)
     df.to_csv(f'../datasets/clean/{output_csv}', index=False)
-    return df
 
-def clean_preprocess_anime_data(input_csv: str, output_csv: str) -> pd.DataFrame:
+def clean_preprocess_anime_data(input_csv: str, output_csv: str):
     """
     Cleans and preprocesses the anime dataset by filtering out the irrelevant features
     and datapoints and reformatting the columns names and attribute values
@@ -65,9 +64,8 @@ def clean_preprocess_anime_data(input_csv: str, output_csv: str) -> pd.DataFrame
 
     os.makedirs(f'../datasets/clean/', exist_ok=True)
     df.to_csv(f'../datasets/clean/{output_csv}', index=False)
-    return df
 
-def clean_preprocess_algorithms_data(input_csv: str, output_csv: str) -> pd.DataFrame:
+def clean_preprocess_algorithms_data(input_csv: str, output_csv: str):
     """
     Cleans and preprocesses the algorithms dataset by constraining the trials and epochs
     to the first 10 and then cleans the inconsistent entry of algorithm labels.
@@ -97,4 +95,3 @@ def clean_preprocess_algorithms_data(input_csv: str, output_csv: str) -> pd.Data
 
     os.makedirs(f'../datasets/clean/', exist_ok=True)
     df.to_csv(f'../datasets/clean/{output_csv}', index=False)
-    return df
