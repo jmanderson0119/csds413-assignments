@@ -39,10 +39,10 @@ def dists_generate(input_csv: str, params: tuple, dist_type: str):
 
     mu, std, a, b, alpha, lamb = params
 
-    gaussian_samples = int(np.random.normal(loc=mu, scale=std, size=n))
-    uniform_samples = int(np.random.uniform(low=a, high=b, size=n))
-    powerlaw_samples = int((a * (1 - np.random.uniform(0, 1, n)) ** (-1 / (alpha - 1))))
-    exponential_samples = int(np.random.exponential(scale=1/lamb, size=n))
+    gaussian_samples = (np.random.normal(loc=mu, scale=std, size=n)).astype(int)
+    uniform_samples = (np.random.uniform(low=a, high=b, size=n)).astype(int)
+    powerlaw_samples = ((a * (1 - np.random.uniform(0, 1, n)) ** (-1 / (alpha - 1)))).astype(int)
+    exponential_samples = (np.random.exponential(scale=1/lamb, size=n)).astype(int)
 
     gaussian_df = pd.DataFrame({f'{obs_name}_gaussian': gaussian_samples})
     uniform_df = pd.DataFrame({f'{obs_name}_uniform': uniform_samples})
@@ -53,3 +53,5 @@ def dists_generate(input_csv: str, params: tuple, dist_type: str):
     uniform_df.to_csv(f'../datasets/{dist_type}/synth/{obs_name}_uniform.csv', index=False) 
     powerlaw_df.to_csv(f'../datasets/{dist_type}/synth/{obs_name}_powerlaw.csv', index=False)
     exponential_df.to_csv(f'../datasets/{dist_type}/synth/{obs_name}_exponential.csv', index=False)
+
+dists_generate('../datasets/exponential/clean/birth_intervals.csv', dists_fit('../datasets/exponential/clean/birth_intervals.csv'), 'exponential')

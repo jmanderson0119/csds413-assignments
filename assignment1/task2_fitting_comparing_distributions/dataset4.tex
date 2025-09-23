@@ -20,7 +20,50 @@ For this exercise, we will call each of the four different theoretical distribut
 \end{tabular}
 \end{center}
 
-Be sure to show the code you used to arrive at your final estimates clearly.
+Be sure to show the code you used to arrive at your final estimates clearly.\\
+-----\\
+Below are the tabulated parameter estimates for this dataset (for the full tabulation described in the original assignment TeX, see Appendix). The code in Fig. 1 was also used to arrive at our final parameter estimates for this dataset, here is the same implementation below for convenience:\\
+\begin{verbatim}
+def dists_fit(input_csv: str) -> tuple:
+    """
+    Fits the obs dataset to each model using MLE.
+
+    :param input_csv: Path to input data to fit paramater(s) to
+    :type input_csv: str
+    """
+    obs = pd.read_csv(input_csv).iloc[:, 0].to_numpy()
+
+    mu = np.mean(obs)
+    std = np.sqrt(np.sum((obs - mu) ** 2) / len(obs))
+
+    a, b = obs.min(), obs.max()
+
+    alpha = 1 + len(obs) / np.sum(np.log(obs / a))
+
+    lamb = 1 / np.mean(obs)
+
+    return (mu, std, a, b, alpha, lamb)
+\end{verbatim}
+
+\vspace{4pt}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+& & \multicolumn{4}{c|}{{\bf{\em{Model}}}}\\
+\hline
+{{\bf{\em{Dataset}}}} & {\bf{\em{\# Observations}}} &\textbf{Normal}& \textbf{Uniform} & \textbf{Power law} & \textbf{Exponential} \\
+\hline
+\textbf{Brisbane Birth Intervals} & 43 & 33.3, 29.2 & 1, 157 & 1.32, 1 & 0.0301 \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{center}
+\textbf{Figure 3:} Parameter estimates for each model on Brisbane Birth Intervals dataset.
+\end{center}
+
+\newpage
 
 \subsection{Part C: Comparing Real and Synthetic Data}
 
