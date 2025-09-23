@@ -89,3 +89,38 @@ For this dataset, identify the synthetic dataset (which corresponds to a model) 
 
 Now revisit your initial hypothesis. For this dataset: Did the dataset behave as expected, or was another model (assumed distribution) a better fit to the dataset? Reflect on why the observed results may differ from your expectations.\\
 -----\\
+To assess the synthetic data versus the real sample given our Uniform hypothesis, we need an understanding of how evenly distributed the probability mass is of the real sample and each of the model samples. That makes a histogram plot sound very appealing, however some of the other models, namely the exponential model and especially the power law model, fit toward very infrequent extreme values, which make it rather hard to visualize bins of die roll values in this way. Additionally, the Normal model possesses the unique quality of fitting toward a symmetric distribution, allowing for negative roles at the extremes of its distribution. That being said, we first take a look at their K-S statistics tabulated below:
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Distribution} & \textbf{K-S Statistic} & \textbf{p-value} & \textbf{Significant} \\
+\hline
+Normal & 0.11 & 0.341 & No \\
+\hline
+Uniform & 0.12 & 0.273 & No \\
+\hline
+Power Law & 0.30 & 5.00 $\times 10^{-6}$ & Yes \\
+\hline
+Exponential & 0.21 & 0.004 & Yes \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{center}
+\textbf{Figure 8:} Kolmogorov-Smirnov test results between D20 Die Rolls dataset and synthetic samples.
+\end{center}
+
+Interestingly enough, the K-S statistic accompanied with p-values shows that the Power Law model and the Exponential model are unsuitable for representing the real data die rolls, showing relatively higher disagreement that is almost certainly significant in nature, however the representative ability of the Normal and Uniform distribution appear quite similar from this test despite the fact that the Gaussian can and will sometimes sample values outside of the outcome space.\\
+
+We now plot for our two most representative models the aforementioned histogram, without any worries of single extremes obfuscating the entire visual:
+
+\begin{center}
+  \includegraphics[width=0.90\textwidth]{figures/uniform/histogram.png}
+  
+  \textbf{Figure 9:} Histogram of Real vs Synthetic Distributions on D20 Die Rolls dataset.
+\end{center}
+
+It is immediately obvious from this plot that the Normal distribution is not as well-representative of the real sample toward extreme values, where the underlying assumptions of the uniform model regarding outcome space become relevant. The Uniform distribution mirrors the sporadic distribution of mass as the real sample set within the realms of possibilities for the die.\\
+
+We can make a confident claim that the data sample produced by the Uniform model best represents the original data from its distribution. This confirms our hypothesis and the dataset behaved as we had expected; unweighted dice ought to be uniform in outcome.

@@ -53,5 +53,3 @@ def dists_generate(input_csv: str, params: tuple, dist_type: str):
     uniform_df.to_csv(f'../datasets/{dist_type}/synth/{obs_name}_uniform.csv', index=False) 
     powerlaw_df.to_csv(f'../datasets/{dist_type}/synth/{obs_name}_powerlaw.csv', index=False)
     exponential_df.to_csv(f'../datasets/{dist_type}/synth/{obs_name}_exponential.csv', index=False)
-
-dists_generate('../datasets/exponential/clean/birth_intervals.csv', dists_fit('../datasets/exponential/clean/birth_intervals.csv'), 'exponential')

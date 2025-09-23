@@ -11,7 +11,7 @@ def qqplot(real_csv: str, synthetic_csvs: list, labels: list, output_filename: s
     sns.set_palette("muted")
     plt.figure(figsize=(12, 8))
     
-    percentiles = np.linspace(0, 100, 25)
+    percentiles = np.linspace(0, 100, 75)
     
     for synth_csv, label in zip(synthetic_csvs, labels):
         synthetic_data = pd.read_csv(synth_csv).iloc[:, 0].to_numpy()
@@ -37,6 +37,6 @@ def qqplot(real_csv: str, synthetic_csvs: list, labels: list, output_filename: s
     os.makedirs("../figures", exist_ok=True)
     plt.savefig(f"../figures/{output_filename}", bbox_inches='tight', dpi=300)
 
-qqplot('../datasets/normal/clean/sepal_widths.csv', ['../datasets/normal/synth/sepal_widths_setosa_gaussian.csv', '../datasets/normal/synth/sepal_widths_setosa_uniform.csv'], 
+qqplot('../datasets/uniform/clean/d20_rolls.csv', ['../datasets/uniform/synth/rolls_gaussian.csv', '../datasets/uniform/synth/rolls_uniform.csv'], 
                                                      ##'../datasets/normal/synth/sepal_widths_setosa_powerlaw.csv', '../datasets/normal/synth/sepal_widths_setosa_exponential.csv'],
-                                                     ['Normal', 'Uniform'], '../figures/normal/qqplot.png')
+                                                     ['Normal', 'Uniform'], '../figures/uniform/qqplot.png')
