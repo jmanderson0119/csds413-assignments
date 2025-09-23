@@ -75,5 +75,3 @@ def clean_brisbane_data(input_csv: str, output_csv: str):
     birth_intervals_df = pd.DataFrame({'birth_intervals': birth_intervals})
 
     birth_intervals_df.to_csv(f'../datasets/exponential/clean/{output_csv}', index=False)
-
-clean_brisbane_data('../datasets/exponential/raw/brisbane_births_intervals.csv', 'birth_intervals.csv')

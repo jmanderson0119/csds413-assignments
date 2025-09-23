@@ -19,6 +19,3 @@ def kstest(real_csv: str, synthetic_csvs: list, labels: list):
         })
     
     return results
-
-print(kstest('../datasets/uniform/clean/d20_rolls.csv', ['../datasets/uniform/synth/rolls_gaussian.csv', '../datasets/uniform/synth/rolls_uniform.csv', 
-        '../datasets/uniform/synth/rolls_powerlaw.csv', '../datasets/uniform/synth/rolls_exponential.csv'], ['Normal', 'Uniform', 'Power Law', 'Exponential']))

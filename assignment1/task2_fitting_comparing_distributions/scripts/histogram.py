@@ -22,8 +22,8 @@ def histogram(real_csv: str, synthetic_csvs: list, labels: list, output_filename
     sns.set_palette("muted")
     plt.figure(figsize=(12, 7))
 
-    ax = sns.histplot(data=all_data, x='Data', hue='Model', bins=40,
-                 stat='density', alpha=0.7, edgecolor='white', multiple='layer')
+    ax = sns.histplot(data=all_data, x='Data', hue='Model', bins=65,
+                 stat='density', alpha=0.8, edgecolor='white', multiple='stack')
 
     ax.set_xlabel(xlabel, fontsize=14, labelpad=15)
     ax.set_ylabel(ylabel, fontsize=14, labelpad=15)
@@ -37,9 +37,3 @@ def histogram(real_csv: str, synthetic_csvs: list, labels: list, output_filename
     plt.tight_layout()
     os.makedirs("../figures", exist_ok=True)
     plt.savefig(f"../figures/{output_filename}", bbox_inches='tight', dpi=300)
-
-histogram('../datasets/uniform/clean/d20_rolls.csv', ['../datasets/uniform/synth/rolls_gaussian.csv', '../datasets/uniform/synth/rolls_uniform.csv'],
-        #'../datasets/uniform/synth/rolls_powerlaw.csv', '../datasets/uniform/synth/rolls_exponential.csv'], 
-        ['Gaussian', 'Uniform' #'Power Law', 'Exponential'
-         ],
-        'uniform/histogram.png', xlabel='D20 Roll Value', ylabel='Density of Rolls', title='Histogram of Real vs Synthetic D20 Roll Distributions')

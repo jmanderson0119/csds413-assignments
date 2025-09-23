@@ -36,7 +36,3 @@ def qqplot(real_csv: str, synthetic_csvs: list, labels: list, output_filename: s
     plt.tight_layout()
     os.makedirs("../figures", exist_ok=True)
     plt.savefig(f"../figures/{output_filename}", bbox_inches='tight', dpi=300)
-
-qqplot('../datasets/uniform/clean/d20_rolls.csv', ['../datasets/uniform/synth/rolls_gaussian.csv', '../datasets/uniform/synth/rolls_uniform.csv'], 
-                                                     ##'../datasets/normal/synth/sepal_widths_setosa_powerlaw.csv', '../datasets/normal/synth/sepal_widths_setosa_exponential.csv'],
-                                                     ['Normal', 'Uniform'], '../figures/uniform/qqplot.png')
