@@ -1,0 +1,97 @@
+\documentclass[11pt]{article}
+\usepackage{hyperref}
+\input{../assignment}
+\begin{document}
+
+\falltwofive[]{2}{Fall 2025}{Statistical Inference}
+
+\section*{Task 1: German Tank Problem}
+Recall the German Tank (or the ``Rocket Science") problem from Exercise \#7 in the class. You know that the Nazi Army is assigning sequential integer IDs to their tanks. In other words, if they have $M$ tanks, there is a tank with ID $i$ for all $1\leq i \leq M$. The allied forces capture $n$ tanks and the IDs of these tanks are $1 \leq x_1 \leq  x_2 \leq  ... \leq x_n$. Our goal is to estimate $M$, i.e., the number of tanks that the Nazis have, based on the assumption that the tanks were captured uniformly at random from these $M$ tanks. 
+
+\begin{enumerate}
+\item[(a)]
+Let $\hat{M}_{MLE}$ be the maximum likelihood estimator for $M$. Compute $\hat{M}_{MLE}$.
+
+\item[(b)]
+Let $\hat{M}_{MEAN} = 2(\sum_{i=1}^n{x_i}/n)-1$
+and  $\hat{M}_{MVU}=x_n(\frac{n+1}{n})-1$ be two additional candidate estimators for $M$. 
+Theoretically characterize the expected value of each of the three estimators   ($\hat{M}_{MLE}$, $\hat{M}_{MEAN}$
+$\hat{M}_{MVU}$) for a given $M$ and $N$.
+Comment on the bias of each estimator.
+
+\item[(c)]
+Using different values of $M$ and $n$, simulate different instances of the German Tank Problem, visualize the mean and variance of these three estimators ($\hat{M}_{MLE}$, $\hat{M}_{MEAN}$,
+$\hat{M}_{MVU}$) as a function of $M$ and $n$ (i.e., fix $M$ to, say 100, 1000, 10K etc., and
+for each $M$, plot the mean and variance of the estimators as a function of $n$ - you can compute the mean and variance by repeating the
+simulation multiple times for each combination of $M$ and $n$). Discuss the differences between the estimators in terms of their bias and variance.
+\end{enumerate}
+
+%\textbf{Optional: 
+%If you attempt to answer this question, it will be graded separately and will be considered for an additional $1$ percentage points increase to your final grade (no partial grades, only the submissions who provide the correct answer with minor flaws will receive the whole bonus).    
+
+\newpage
+\section*{Task 2: The Distribution of the Sample Mean}
+
+In this task, you will we gain insight about the Central Limit Theorem. Consider three random variables:
+
+\begin{enumerate}
+    \item[(a)] A \textbf{Uniform distribution} on $[0.25,1.25]$
+    \item[(b)] A \textbf{Power-Law distribution} (with parameter $\alpha = 3$)
+    \item[(c)] A \textbf{Pareto distribution} (\texttt{np.random.pareto}, with parameter $\alpha = 1$)
+\end{enumerate}
+
+\subsubsection*{Part A: Data Generation}
+\begin{itemize}
+    \item For each distribution, generate \textbf{replicates of data} with sizes $10$, $100$, and $1000$.  
+    \item Each replicate should consist of $100$ samples.  
+    \item Example: For ``10 replicates,'' generate 10 separate datasets, each with 100 samples.  
+    \item For one replicate from each distribution, plot the distribution of the sample to ensure that it follows a uniform/power-law distribution.
+\end{itemize}
+
+\textbf{Implementation notes:}  
+\begin{itemize}
+    \item In \textbf{Python}, use \texttt{numpy.random.uniform} and \texttt{numpy.random.power}.%, and \texttt{numpy.random.pareto}.  
+    \item In \textbf{R}, use \texttt{runif()}, \texttt{rplcon()} (for Power, with shape1 = $\alpha$, shape2 = 2.5). 
+        
+\end{itemize}
+
+\subsubsection*{Part B: Sample Means and Visualization}
+\begin{itemize}
+
+    \item Compute the sample means for each set of replicates. You should have 9 of them, 3 for each distribution with varying sample sizes.
+    \item For each distribution and replicate size, we want to view and compare their distributions. Which plot do you think is appropriate? Plot the appropriate plot for each replicate, please plot them separately. 
+    \item Do not confuse the distribution of sample mean with the distribution of the sample (which you plotted in Part A).
+\end{itemize}
+
+\subsubsection*{Part C: Normal Approximation via CLT}
+\begin{itemize}
+    \item By the Central Limit Theorem, the distributions of sample means should approximate normal distributions. Determine the parameters (mean and standard deviation) of the approximating normal distributions for both power law and uniform cases.
+    \item Overlay the probability density functions (PDFs) of these normal distributions on the corresponding plot from part B.
+\end{itemize}
+
+\subsubsection*{Part D: Distribution Comparison with KS-Test}
+\begin{itemize}
+    \item Compare the empirical distributions of sample means (from power law vs. uniform) using the Kolmogorov--Smirnov (KS) test.
+    \item Discuss whether the KS-test supports the theoretical expectation that both sample mean distributions should approximate normality under the CLT. And investigate how the power of the KS-test changes as the number of sample means increases ($10$, $100$, $1000$).
+\end{itemize}
+
+
+\newpage
+\section*{Task 3: Hypothesis Testing}
+
+Car sales people usually claim that Japanese cars have better mileage than US cars. As a critical thinker, you know not to immediately believe what somebody who is trying to sell you something says. However, as a data scientist,
+you are curious to see whether this claim has any statistical basis. 
+
+You found some data collected in “cars.csv”.  The first
+column contains a sample of measured mileage per hour for different US cars and the second column contains a sample of measured mileage per hour for different Japanese Cars. 
+Answer the following questions: 
+\begin{itemize}
+    \item[(a)] How many US and how many Japanese cars does the dataset contain? 
+    \item[(b)] State the hypothesis you are testing to scrutinize the sales person's claim.
+    \item[(c)] What is the statistic you would compute to test this hypothesis and its theoretical distribution?
+    \item[(d)] What is the value of your statistic and what is its p-value?
+    \item[(e)] What is your conclusion about the sales person's claim?
+\end{itemize}
+\textbf{Note:} Be sure to check any conditions or assumptions of the chosen test before computing statistics and drawing your conclusion.
+
+\end{document}

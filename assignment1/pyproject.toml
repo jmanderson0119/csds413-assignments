@@ -1,8 +1,11 @@
-[tool.poetry]
-name = "csds413-assignment1"
+[project]
+name = "assignment1"
 version = "0.1.0"
 description = "CSDS 413 Assignment 1"
-authors = ["Jacob Anderson <jma195@case.edu>", "Wiam Skakri <wxs428@case.edu>"]
+authors = [
+    {name = "Jacob Anderson", email = "jma195@case.edu"},
+    {name = "Wiam Skakri", email = "wxs428@case.edu"}
+]
 
 [tool.poetry.dependencies]
 python = "^3.12"
