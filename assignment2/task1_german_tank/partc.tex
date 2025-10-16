@@ -6,4 +6,255 @@ simulation multiple times for each combination of $M$ and $n$). Discuss the diff
 
 -----\\
 
+I performed simulations of the German Tank Problem for each of these $ M $ values: 100, 1000, 10000. For each value, I varied $ n $ from 5\% to 95\% of each population, in 5\% increments. For each $ (M, n) $ combination, the three estimators were computed across 1000 simulations and mean and variance were collected across the simulations.\\
+
+Figure 2 illustrates all of the code related to computing each of the three estimators:
+
+\begin{verbatim}
+def mle_M(tank_ids: list) -> int:
+    """
+    Computes the MLE for the total number of tanks.
+    
+    :param tank_ids: List of observed tank IDs
+    :type tank_ids: list
+    :returns: Maximum likelihood estimate of total tanks
+    :rtype: int
+    """
+    return max(tank_ids)
+
+def mean_M(tank_ids: list) -> float:
+    """
+    Computes the MEAN estimator for the total number of tanks.
+    
+    :param tank_ids: List of observed tank IDs
+    :type tank_ids: list
+    :returns: MEAN estimate of total tanks
+    :rtype: float
+    """
+    return 2 * np.mean(tank_ids) - 1
+
+def mvu_M(tank_ids: list) -> float:
+    """
+    Computes the MVU estimator for the total number of tanks.
+    
+    :param tank_ids: List of observed tank IDs
+    :type tank_ids: list
+    :returns: MVU estimate of total tanks
+    :rtype: float
+    """
+    n = len(tank_ids)
+    return max(tank_ids) * ((n + 1) / n) - 1
+\end{verbatim}
+
+\begin{center}
+\textbf{Figure 2:} Estimator functions for $\hat{M}_{MLE}$, $\hat{M}_{MEAN}$, $\hat{M}_{MVU}$.\\
+\end{center}
+
+The simulations were handled by a module containing, alongside tank\_capture() from Part A, a function for simulating repeated trials of a specific $ (M, n) $ configuration of the German Tank Problem and a function for coordinating all of the different $ (M, n) $ configurations, shown below:
+
+\begin{verbatim}
+def simulate_estimators(M: int, n: int, num_trials: int) -> dict:
+    """
+    Simulates the German Tank Problem multiple times and computes
+    all three estimators for each.
+    
+    :param M: Total number of tanks
+    :type M: int
+    :param n: Number of tanks to capture per sim
+    :type n: int
+    :param num_trials: Number of simulations
+    :type num_trials: int
+    :returns: Dictionary with lists of estimates for each estimator
+    :rtype: dict
+    """
+    mle_estimates = []
+    mean_estimates = []
+    mvu_estimates = []
+    
+    for _ in range(num_trials):
+        captured = tank_capture(M, n)
+        mle_estimates.append(mle_M(captured))
+        mean_estimates.append(mean_M(captured))
+        mvu_estimates.append(mvu_M(captured))
+    
+    return {
+        'mle': mle_estimates,
+        'mean': mean_estimates,
+        'mvu': mvu_estimates
+    }
+
+def run_simulations(M_values: list, num_trials: int) -> pd.DataFrame:
+    """
+    Runs simulations for all (M, n) combinations,
+    computing mean and variance of each estimator.
+    
+    :param M_values: List of M values to test
+    :type M_values: list
+    :param num_trials: Number of trials per (M, n) combination
+    :type num_trials: int
+    :returns: DataFrame with simulation results
+    :rtype: pd.DataFrame
+    """
+    n_percentages = [p * 0.01 for p in range(5, 100, 5)]
+    results = []
+    
+    for M in M_values:
+        n_values = [max(1, int(M * p)) for p in n_percentages]
+        
+        for n in n_values: 
+            estimates = simulate_estimators(M, n, num_trials)
+            
+            results.append({
+                'M': M,
+                'n': n,
+                'mle_mean': np.mean(estimates['mle']),
+                'mle_var': np.var(estimates['mle']),
+                'mean_mean': np.mean(estimates['mean']),
+                'mean_var': np.var(estimates['mean']),
+                'mvu_mean': np.mean(estimates['mvu']),
+                'mvu_var': np.var(estimates['mvu'])
+            })
+    
+    df = pd.DataFrame(results)
+    return df
+\end{verbatim}
+
+\begin{center}
+\textbf{Figure 3:} Simulation functions for comparing the three estimators.
+\end{center}
+
+Below is the visualization code used to generate the comparison plots for estimator mean and variance:
+
+\begin{verbatim}
+def plot_estimator_means(results_df: pd.DataFrame, output_dir: str):
+    """
+    Plots the mean of each estimator as a function of n, for each M value.
+    
+    :param results_df: DataFrame of estimator means and variances
+    :type results_df: pd.DataFrame
+    :param output_dir: Where to save the figures
+    :type output_dir: str
+    """
+    sns.set_style("whitegrid")
+    sns.set_palette("muted")
+    
+    M_values = results_df['M'].unique()
+    
+    for M in M_values:
+        df = results_df[results_df['M'] == M]
+        
+        plt.figure(figsize=(12, 7))
+        
+        ax = plt.gca()
+        ax.plot(df['n'], df['mle_mean'], 
+                marker='o', markersize=4, label='MLE', linewidth=2, alpha=0.8)
+        ax.plot(df['n'], df['mean_mean'], 
+                marker='o', markersize=4, label='MEAN', linewidth=2, alpha=0.8)
+        ax.plot(df['n'], df['mvu_mean'], 
+                marker='o', markersize=4, label='MVU', linewidth=2, alpha=0.8)
+        ax.axhline(y=M, color='black', linestyle='--', linewidth=1.5, 
+                   label=f'True M={M}')
+        
+        ax.set_xlabel('Sample Size n', fontsize=14, labelpad=15)
+        ax.set_ylabel('Mean Estimate', fontsize=14, labelpad=15)
+        ax.set_title(f'Mean of Estimators vs Sample Size (M={M})', fontsize=16, pad=20)
+        
+        legend = ax.legend(fontsize=12, loc='best')
+        for text in legend.get_texts():
+            text.set_fontsize(11)
+        
+        plt.tight_layout()
+        os.makedirs(output_dir, exist_ok=True)
+        plt.savefig(f'{output_dir}/mean_comparison_M{M}.png', bbox_inches='tight', dpi=300)
+        
+def plot_estimator_variances(results_df: pd.DataFrame, output_dir: str = '../figures'):
+    """
+    Plots the variance of each estimator as a function of n, for each M value.
+    
+    :param results_df: DataFrame from estimator means and variances
+    :type results_df: pd.DataFrame
+    :param output_dir: Where to save the figures
+    :type output_dir: str
+    """
+    sns.set_style("whitegrid")
+    sns.set_palette("muted")
+    
+    M_values = results_df['M'].unique()
+    
+    for M in M_values:
+        df = results_df[results_df['M'] == M]
+        
+        plt.figure(figsize=(12, 7))
+        
+        ax = plt.gca()
+        ax.plot(df['n'], df['mle_var'], 
+                marker='d', markersize=8, label='MLE', linewidth=2, alpha=0.8)
+        ax.plot(df['n'], df['mean_var'], 
+                marker='o', markersize=4, label='MEAN', linewidth=2, alpha=0.8)
+        ax.plot(df['n'], df['mvu_var'], 
+                marker='o', markersize=4, label='MVU', linewidth=2, alpha=0.8)
+        
+        ax.set_xlabel('Sample Size n', fontsize=14, labelpad=15)
+        ax.set_ylabel('Variance', fontsize=14, labelpad=15)
+        ax.set_title(f'Variance of Estimators vs Sample Size (M={M})', fontsize=16, pad=20)
+        
+        legend = ax.legend(fontsize=12, loc='best')
+        for text in legend.get_texts():
+            text.set_fontsize(11)
+        
+        plt.tight_layout()
+        os.makedirs(output_dir, exist_ok=True)
+        plt.savefig(f'{output_dir}/variance_comparison_M{M}.png', bbox_inches='tight', dpi=300)
+\end{verbatim}
+
+\begin{center}
+\textbf{Figure 4:} Visualization functions for estimator comparison.\\
+\end{center}
+
+You'll notice that in the variance figures, I chose to make the markers associated with the MLE plots larger and in the shape of diamonds because at high population scales, the plots of MLE (blue) and MVU (green) variance are so similar to each other, relative to MEAN, that they almost perfectly overlap each other visually. This was intended to make sure the reader can still recognize the individual plots in the figures.\\
+
+Figures 5-7 show the mean of each estimator as a function of sample size $n$ for $ M=100, 1000, 10000 $.
+
+\begin{center}
+  \includegraphics[width=0.95\textwidth]{figures/mean_comparison_M100.png}
+  \textbf{Figure 5:} Mean of estimators vs sample size for $M=100$.
+\end{center}
+
+\begin{center}
+  \includegraphics[width=0.95\textwidth]{figures/mean_comparison_M1000.png}
+  \textbf{Figure 6:} Mean of estimators vs sample size for $M=1000$.
+\end{center}
+
+\begin{center}
+  \includegraphics[width=0.95\textwidth]{figures/mean_comparison_M10000.png}
+  \textbf{Figure 7:} Mean of estimators vs sample size for $M=10000$.
+\end{center}
+
+Figures 8-10 show the variance of each estimator as a function of sample size $ n $ for the same values of $ M $.
+
+\begin{center}
+  \includegraphics[width=0.95\textwidth]{figures/variance_comparison_M100.png}
+  \textbf{Figure 8:} Variance of estimators vs sample size for $M=100$.
+\end{center}
+
+\begin{center}
+  \includegraphics[width=0.95\textwidth]{figures/variance_comparison_M1000.png}
+  \textbf{Figure 9:} Variance of estimators vs sample size for $M=1000$.
+\end{center}
+
+\begin{center}
+  \includegraphics[width=0.95\textwidth]{figures/variance_comparison_M10000.png}
+  \textbf{Figure 10:} Variance of estimators vs sample size for $M=10000$.\\
+\end{center}
+
+The plots of estimator mean in each of the three figures clearly illustrate the unique bias of the MLE for this German Tank Problem, where it consistently underestimates the true value of $ M $. This estimate then becomes more and more accurate to the true population as $ n $ increases, approaching the dashed line representing true M in the figure. We can think of that behavior intuitively as the uniform, random sampling having more opportunities to observe a value closer to the actual maximum ID present for the population.\\
+
+The correction factor applied for MVU yields a very satisfying outcome, as the plot quickly converges to the true parameter value, riding the dashed line at true M across the majority of the sample sizes. The MVU estimate is calibrated exactly as it needs to be to adjust for the structural underestimation present in the MLE, because the correction factor $ \frac{n+1}{n} $ is literally the inverse of the factor underlying the undervaluation of the MLE, expressed in its expectation and is what we observed in the calculation of MLE bias in Part B: $ E[\hat{M}_{MLE}] - M = \frac{n}{n+1}(M+1) - M $. In the case of MVU, the expected value simplifies to $ E[\hat{M}_{MVU}] - M = \frac{n+1}{n}\frac{n}{n+1}(M+1) - M = (M+1) - M $. I'm assuming that similar to what we discussed in lecture last week, the convention of the $ +1 $ factor in this final expression is sometimes omitted sometimes not, and for large M, is very insignificant, though regardless the expected value of MVU was provided by the professor as $ M $. In any case, the MVU is corrected by exactly what is necessary to fully address the negative bias present in the MLE.\\
+
+MEAN is also unbiased like MVU, however it's visually clear from the estimator mean figures that the underlying mechanism that makes MEAN unbiased is not nearly as well-calibrated for smaller $ n $. MEAN is unbiased in the sense that the sample mean of the observations will approximate the population mean and will become more representative of the population mean for greater numbers of samples.\\
+
+That being said, this approximation is more sensitive to the uniform, random sampling for small $ n $, as opposed to the careful correction of MVU with respect to sample size, $ \frac{n+1}{n} $. For this reason, we can see in the variance figures for any of the $ M $ values that as $ n $ decreases, the MEAN estimate skyrockets in variance compared to the MVU estimate because the estimate's stability is dependent on the random chance that the individual sets of observations over the repeated simulations happen to yield similar results.\\
+
+Regarding the variance of the MLE, we can now verify visually that variance is quite low in each of the cases of $ M $ and across the different sample sizes $ n $. While structurally biased, the design of MLE yields consistently close estimates given some set number of chances to sample a value close to $ M $. In other words, its inconsistency in estimating $ M $ depends only on how many chances the sampling is given to observe values close to $ M $, and so as $ n $ increases, the estimator converges quite tightly to $ M $.
+
 \newpage

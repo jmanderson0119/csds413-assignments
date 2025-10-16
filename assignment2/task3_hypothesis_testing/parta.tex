@@ -2,4 +2,28 @@
 How many US and how many Japanese cars does the dataset contain?\\
 -----\\
 
+From the context, "first column contains a sample of measured mileage per
+hour for different US cars and the second column contains a sample of measured mileage per hour for different Japanese Cars". This ought to mean that each row, regardless of if it contains a mileage that has been seen before, represents a different car for the purpose of counting. Below is a little Python REPL to count the number of rows for each column containing a mileage:
+
+\begin{verbatim}
+(assignment2-py3.12) jande@BT-7274:~/csds413_assignments/assignment2/
+task3_hypothesis_testing/datasets$ python
+Python 3.12.0 (main, Jun  9 2025, 09:52:12) [GCC 13.3.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import pandas as pd
+>>> cars = pd.read_csv("cars.csv", header=None)
+>>> us_cars = len(cars[cars[0].notna()])
+>>> us_cars
+249
+>>> jp_cars = len(cars[cars[1].notna()])
+>>> jp_cars
+79
+\end{verbatim}
+
+\begin{center}
+\textbf{Figure 1:} Python REPL counting the number of cars of each type in the dataset.\\
+\end{center}
+
+There are 249 US cars and 79 Japanese cars.
+
 \newpage

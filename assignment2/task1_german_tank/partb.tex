@@ -7,4 +7,26 @@ Comment on the bias of each estimator.
 
 -----\\
 
+These expected values for each estimator were given in the recent Canvas announcement:
+
+\begin{align*}
+E[\hat{M}_{MLE}] &= \frac{n}{n+1}(M+1)\\
+E[\hat{M}_{MEAN}] &= M\\
+E[\hat{M}_{MVU}] &= M
+\end{align*}
+
+Generally speaking, the bias of an estimator is the difference between the expected value of the estimator and the true parameter value. That makes $ E[\hat{M}_{MEAN}] = M $ and $ E[\hat{M}_{MVU}] = M $ very straightforward cases: $ M-M = 0 $; these two have no bias, they are unbiased estimators. The MEAN estimator correctly estimates M on average by using the sample mean of observed tank IDs because under uniform sampling, the average captured ID value should approximate the true mean of the tank population. The MVU estimator achieves M on average by applying $(n+1)/n$ to the maximum observed value as a correction factor to the undervaluation by the MLE.\\
+
+Regarding the bias of $\hat{M}_{MLE} $ as $ E[\hat{M}_{MLE}] - M = \frac{n}{n+1}(M+1) - M $, this can be simplified to $ -\frac{M-n}{n+1} $:
+
+\begin{align*}
+E[\hat{M}_{MLE}] - M &= \frac{n}{n+1}(M+1) - M\\
+&= \frac{n(M+1) - M(n+1)}{n+1}\\
+&= \frac{nM + n - Mn - M}{n+1}\\
+&= \frac{n - M}{n+1}\\
+&= -\frac{M-n}{n+1}
+\end{align*}
+
+The bias is negative, so on average the MLE will underestimate the total number of tanks. That reflects well how the MLE computation works, because the only cases where MLE is M are the cases where the random, uniform sample of n tanks includes the highest-numbered tank; otherwise, the MLE will be off by the difference between M and the maximum value observed in the sample.
+
 \newpage

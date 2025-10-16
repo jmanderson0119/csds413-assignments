@@ -2,5 +2,68 @@
 Let $\hat{M}_{MLE}$ be the maximum likelihood estimator for $M$. Compute $\hat{M}_{MLE}$.
 
 -----\\
+Under the assumption in the context, "the tanks were captured uniformly at random from these M tanks", we are looking at some unique list of n tank IDs from $\binom{M}{n}$ possible observations, making the probability of an individual combination of n tank IDs captured $\frac{1}{\binom{M}{n}}$.\\
+
+However, the likelihood of this observation is non-zero under the condition that $ M $ is greater than or equal to $ x_n $, or else it would be impossible to observe $ x_n $ under this capturing assumption:
+
+$$L(M) = \begin{cases}
+\frac{1}{\binom{M}{n}} & \text{if } M \geq x_n \\
+0 & \text{if } M < x_n
+\end{cases}$$
+
+Regarding the maximum, likelihood is zero for $ M $ less than $ x_n $, and when $ M $ is greater than $ x_n $, $\binom{M}{n}$ becomes larger and makes our specific observation of IDs less likely given a random, uniform sampling, meaning the likelihood must decrease for increasing $ M $, so the MLE estimator must take on the most constraining value of $ M $ that does not make the likelihood of the observation impossible, which is the maximum observed ID: $ \hat{M}_{MLE} = x_n = \max(x_1, x_2, \ldots, x_n) $.\\
+
+Below is the implementation of the estimator for M:
+
+\begin{verbatim}
+def tank_capture(M: int, n: int) -> list:
+    """
+    Capture n tank IDs uniformly at random from M total tanks.
+
+    :param M: Total number of tanks
+    :type M: int
+    :param n: Number of tanks captured
+    :type n: int
+    :returns: List of captured tank IDs
+    :rtype: list
+    """
+    return sorted(np.random.choice(range(1, M + 1), size=n, replace=False).tolist())
+
+def mle_M(tank_ids: list) -> int:
+    """
+    Computes the MLE for the total number of tanks given
+    an observation of tank IDs.
+
+    :param tank_ids: List of observed tank IDs
+    :type tank_ids: list
+    :returns: Maximum likelihood estimate of total tanks
+    :rtype: int
+    """
+    return max(tank_ids)
+\end{verbatim}
+
+\begin{center}
+\textbf{Figure 1:} Problem setup and MLE computation.
+\end{center}
+
+Here is an arbitrary example of $( M=100, n=36 )$, just to exemplify the computation:
+
+{\small
+\begin{verbatim}
+(assignment2-py3.12) jande@BT-7274:~/csds413_assignments/
+assignment2/task1_german_tank/scripts$ python
+Python 3.12.0 (main, Jun  9 2025, 09:52:12) [GCC 13.3.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> from estimators import mle_M
+>>> from sim import tank_capture
+>>> captured_ids = tank_capture(100, 36)
+>>> print(f"Captured tank IDs: {captured_ids}")
+Captured tank IDs: [1, 4, 8, 9, 10, 12, 16, 18, 19, 20, 27, 28, 31, 
+43, 44, 45, 50, 52, 56, 58, 61, 62, 65, 68, 70, 71, 72, 78, 79, 81, 
+83, 84, 86, 94, 95, 97]
+>>> print(f"MLE of total tanks: {mle_M(captured_ids)}")
+MLE of total tanks: 97
+\end{verbatim}
+}
 
 \newpage
