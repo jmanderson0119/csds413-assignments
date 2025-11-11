@@ -1,0 +1,42 @@
+\section{Part (a)}
+
+For the two variables provided in "p1a.csv", assess the association between them by computing each of the following statistics:
+\begin{itemize}
+	\itemsep -0.3em 
+	\item Mutual Information
+	\item Jaccard Index
+	\item Pearson's chi-squared $\chi^2$
+\end{itemize}
+
+\noindent
+For each of these statistics, assess the statistical significance by computing a p-value for the null hypothesis of "there is no association" (see \textit{Note (1)} below). %given the individual frequency of each genomic variant in the sample, we would  expect to observe at least the observed association". 
+Select a significance level $\alpha$ that we can use to reject the null hypothesis and accept the alternate hypothesis "there is a non-zero association." if a p-value is less than $\alpha$ (see \textit{Note (2)} below for the selection of $\alpha$). For each of the three specified statistics, explain, in complete sentences, your findings: Is there a statististically significant association between the given variables? How strong does the association seem? Do the results of different statistics agree? If not, what does this mean (i.e., how do you explain this discrepancy)? Make sure to specify the values of the test statistics and the p-values as well as the selected $\alpha$ level and the number of permutations $N$ you use for the permutation tests.
+
+\vspace{0.2cm}
+\noindent
+\textit{Note (1)}: The p-value in this context indicates the probability of observing a "more significant" result (for a statistic of interest like mutual information) than the observed result when there is no association between the genomic variants (which is our null hypothesis). 
+
+\vspace{0.2cm}
+\noindent
+\textit{Note (2)}: You are welcome to select the commonly used 0.05 as your $\alpha$ threshold. However, you are encouraged to try different $\alpha$ values and observe how the conclusions of a researcher might change dramatically if they are not careful with the interpretations of the hypothesis test results.
+
+\noindent
+\\
+\textit{Hint (1)}: For mutual information and Jaccard index, you need to do a Monte Carlo simulation (\text{e.g., a permutation test}) to assess statistical significance. For Pearson's $\chi^2$, you can use the parametric distribution (i.e., \href{https://en.wikipedia.org/wiki/Pearson\%27s_chi-squared_test\#Testing\_for\_statistical_independence}{Pearson's chi-squared test}) instead of doing a Monte-Carlo simulation to generate the null distribution.
+
+\vspace{0.15cm}
+\noindent
+\textit{Hint (2)}: The idea of the permutation test is to randomly permute the entries in each column (variable) separately, in order to break any possible associations between the variables without modifying their distributions. This way, we can generate a null distribution for the test statistic (like mutual information) that represents our null hypothesis. Performing the permutation test is simple: First, generate $N$ random permutations of the data and for each of these permuted data, compute the test statistic of interest. Then, count the number of times permuted data has more significant values (e.g., higher values for mutual information) than the actual data, let's denote this count $c$. Then, the p-value is simply equal to $\dfrac{c+1}{N+1}$. Notice that, a p-value obtained from a permutation test cannot be lower than $\dfrac{1}{N+1}$. %(or you can fit a known parametric distribution to the distribution you obtain and compute p-value according to that parametric distribution).
+
+\vspace{0.25cm}
+\noindent
+\textit{Hint (3)}: An alternative to a permutation test (or Monte-Carlo simulation in general) is to obtain a null distribution analytically by fitting a known parametric distribution. For example, it is known that Pearson's $\chi^2$ follows a well-studied distribution called \href{https://en.wikipedia.org/wiki/Chi-squared_distribution}{chi-squared distribution} when the null hypothesis of "no association" is correct. Thus, it is possible to obtain a p-value analytically from the chi-squared distribution (indeed, this is what the \href{https://en.wikipedia.org/wiki/Pearson\%27s_chi-squared_test\#Testing\_for\_statistical_independence}{Pearson's chi-squared test} does). %An alternative way of obtaining a null distribution is to know 
+
+\vspace{0.25cm}
+\noindent
+\textit{Hint (4)}: To visualize the results of a permutation test, you can draw a sorted scatter plot while marking the observed value (as shown in 'example-figure1.jpg').\\
+-----\\
+
+
+
+\newpage
