@@ -10,6 +10,60 @@ For each of the $105$ (15$\times$14/2) pairs of variables provided in "p1b.csv",
 \textit{Note (4)}: Using the Benjamini-Hochberg procedure, essentially a stricter threshold is used to reject a null hypothesis (e.g., the threshold of $\dfrac{\alpha}{n}$ for rejecting the null hypothesis of the most significant pair). Therefore, for estimating the p-values using permutation test, you need to use more permutations compared to part (a) to be able find a significant association. Thus, make sure that your number of permutations $N$ is high enough to be able to find at least one significant pair.\\
 -----\\
 
+For the purpose of testing for multiple hypotheses and controlling for FDR, I applied the Benjamini-Hochberg (BH) procedure at $ \alpha = 0.05 $: to identify the most significant associations after FDR correction, we need enough permutations to reliably estimate p-values at about $ 0.05/105  \approx  0.0005 $; towards this end, I set $ N = 50,000 $.
 
+Figure 5 gives the number of significant pairs detected by each statistic and Figure 6 gives the overlap between them:
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Statistic} & \textbf{Significant Pairs} \\
+\hline
+Mutual Information & 91 \\
+\hline
+Jaccard Index & 56 \\
+\hline
+Pearson's $\chi^2$ & 90 \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{center}
+\textbf{Figure 5:} Number of significant pairs detected by each statistic after Benjamini-Hochberg FDR correction at $\alpha = 0.05$.
+\end{center}
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Comparison} & \textbf{Number of Overlapping Pairs} \\
+\hline
+MI $\cap$ JI & 55 \\
+\hline
+MI $\cap$ $\chi^2$ & 89 \\
+\hline
+JI $\cap$ $\chi^2$ & 56 \\
+\hline
+MI $\cap$ JI $\cap$ $\chi^2$ & 55 \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{center}
+\textbf{Figure 6:} Overlap of significant pairs between different statistics.
+\end{center}
+
+Below are the scatter plots side-by-side comparing each of the statistics:
+
+\begin{center}
+    \includegraphics[width=0.95\textwidth]{figures/statistic_comparisons.png}
+  
+    \textbf{Figure 7:} Pairwise comparison of test statistics across 105 genomic variant pairs.
+\end{center}
+
+To characterize each pair from the visual: MI and chi-squared are very similar, showing a very high level of agreement. Jaccard relative to the other two show similar and moderate levels of agreement, but both show some level of difference at lower extremes.\\
+
+Unsurprisingly from the discussion in the previous part, MI and chi-squared show a high degree of agreement while each agrees somewhat with Jaccard. Again, because both of these statistics use all four cells of the contingency table to represent deviation from independence, and Jaccard is constructed more as a similarity measure that is blind to the mutual exclusivity pattern in the data, their ability to identify associations in this data are both better than Jaccard and most similar to each other.\\
+
+I would say that using either MI or Pearson's chi-squared is going to generally arrive at the same result; the only case where just using one statistic would get you very different conclusion would be Jaccard. However, the computationally efficiency of using chi-squared and not having to do many permutation tests to get essentially the same result would make it my preferred statistic. I think the difference in significant pairs by one may be more telling with additional exercises, but its not compelling enough given this test to believe that MI is noticeably superior.\\
 
 \newpage

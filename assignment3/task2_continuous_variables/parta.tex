@@ -1,4 +1,43 @@
 \section{Part (a)}
-For the two variables provided in "p2a.csv", assess the association between them by computing Pearson correlation $r_a$ and computing a p-value $p_a$ for the null hypothesis of no association. Select a significance level $\alpha$ and reject the null-hypothesis if the p-value is less than $\alpha$. Explain, in complete sentences, your findings: Is there a statistically significant association (at $\alpha$ level) between the provided variables? What is the magnitude and the direction of the association?
+For the two variables provided in "p2a.csv", assess the association between them by computing Pearson correlation $r_a$ and computing a p-value $p_a$ for the null hypothesis of no association. Select a significance level $\alpha$ and reject the null-hypothesis if the p-value is less than $\alpha$. Explain, in complete sentences, your findings: Is there a statistically significant association (at $\alpha$ level) between the provided variables? What is the magnitude and the direction of the association?\\
+-----\\
+
+Below is the function and the tabulation for $ r_a $ and $ p_a $:
+
+\begin{verbatim}
+def compute_pearson_correlation(x: np.ndarray, y: np.ndarray) -> tuple:
+    """
+    Computes Pearson correlation coefficient and p-value.
+    
+    :param x: First variable
+    :type x: np.ndarray
+    :param y: Second variable
+    :type y: np.ndarray
+    :returns: Tuple of (correlation coefficient, p-value)
+    :rtype: tuple
+    """
+    r, p_value = pearsonr(x, y)
+    return r, p_value
+\end{verbatim}
+
+\begin{center}
+\textbf{Figure 1:} Function for computing Pearson correlation and p-value.
+\end{center}
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Pearson r} & \textbf{P-value} \\
+\hline
+0.3809 & $ 1.04 \times 10^{-83} $ \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{center}
+\textbf{Figure 2:} Pearson correlation results for p2a.
+\end{center}
+
+The Pearson correlation given by the function was 0.380875. Given a selected significance level $ \alpha = 0.05 $, there is a statistically significant, positive association between the two variables. The p value is incredibly low, magnitudes lower than the selected $ \alpha $, but 0.05 is convention and follows most of the class exercises we have done. By no means is this result challenged by that threshold, so we can confidently reject the null hypothesis.
 
 \newpage

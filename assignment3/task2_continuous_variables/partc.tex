@@ -1,4 +1,46 @@
 \section{Part (c)}
-Repeat part (b). But, this time compare the associations in the datasets "p2a.csv" and "p2c.csv". Make sure to answer the questions in part (b), this time for comparing the variable pairs in parts (a) and (c).
+Repeat part (b). But, this time compare the associations in the datasets "p2a.csv" and "p2c.csv". Make sure to answer the questions in part (b), this time for comparing the variable pairs in parts (a) and (c).\\
+-----\\
+
+Below is the tabulation of the Pearson correlations and p values as well as scatter plots for each dataset:
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Dataset} & \textbf{Pearson r} & \textbf{P-value} \\
+\hline
+p2a & 0.3809 & $ 1.04 \times 10^{-83} $ \\
+\hline
+p2c & 0.0412 & $ 0.0592 $ \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{center}
+\textbf{Figure 3:} Comparison of Pearson correlation results between p2a and p2c.
+\end{center}
+
+\begin{center}
+    \includegraphics[width=0.95\textwidth]{figures/scatter_p2a.png}
+  
+    \textbf{Figure 4:} Scatter plot for p2a.csv.
+\end{center}
+
+\begin{center}
+    \centering
+    \includegraphics[width=0.95\textwidth]{figures/scatter_p2c.png}
+    
+    \textbf{Figure 5:} Scatter plot for p2c.csv.
+\end{center}
+
+The Pearson correlation for p2c came to 0.0412, and given the same significance level $ \alpha = 0.05 $, there is not a statistically significant association between the variables. Given the same significance level $ \alpha = 0.05 $, the p value $ p_c = 0.0592 $ is higher than the threshold, so we fail to reject the null hypothesis.\\
+
+According to the raw correlations $ r_a = 0.3809 $ and $ r_c = 0.0412 $, the part a variable pair shows a stronger correlation. Similarly, the p-values $ p_a =  1.04 \times 10^{-83} $ and $ p_c =  0.0592 $ suggest that the part a variable pair is much smaller and therefore shows a stronger association, so the criteria agree and there is no discrepancy.\\
+
+As far as the scatter plots, again the p2a dataset shows a generally positive agreement that vaguely sticks to the trend line; a result you would expect from a moderate, positive Pearson correlation value. The p2c dataset however shows a very odd behavior: it seems as though as variable 1 increases and is negative, there is a very strong negative association conveyed by variable 2, and similarly for positive variable 1 values, variable 2 shows a very strong positive association. I would think that if p2c just possessed only negative variable 1 samples or only positive variable 1 samples, these results may be very different.\\
+
+If we are to just go off of visual assessment, Pearson correlation aside and just considering the relationship between the variables, I would claim that the p2c variable pair shows much stronger association than p2a. This disagrees with both suggestions made by the Pearson correlations and the p-values. This exercise appears to be a demonstration of how Pearson correlation strictly quantifies linear associations and what scenarios it may fail in.\\
+
+Interestingly enough, the occurrence of positive variable 1 samples and negative variable 1 samples is likely so even in p2c, the two relationships on each side of the y-axis almost perfectly cancel each other out, giving a correlation very close to zero, despite it being immediately apparent from the plot that a strong, non-linear association is present between the variables. That being said, the reason my visual assessment disagrees with the suggestions made by the Pearson correlations and p-values is that I can see from the scatter plot this non-linear relationship that Pearson correlation is blind to, and without the necessary nuance to identify it, the suggestions made by the Pearson correlations and the associated p-values are not compelling in this context.
 
 \newpage

@@ -37,6 +37,174 @@ Select a significance level $\alpha$ that we can use to reject the null hypothes
 \textit{Hint (4)}: To visualize the results of a permutation test, you can draw a sorted scatter plot while marking the observed value (as shown in 'example-figure1.jpg').\\
 -----\\
 
+To perform the permutation test framework on the p1a dataset for mutual information and Jaccard index, I set $ N = 10,000 $. For Pearson's $ \chi^2 $, I decided to follow the suggestion in the instruction and analytically fit the parametric chi-squared distribution with 1 degree of freedom.\\
 
+For all three tests, I used $ \alpha = 0.05 $ to reject the null hypothesis, below is the implementation of the three statistics and the relevant tests:
+
+\begin{verbatim}
+def mutual_information(x: np.ndarray, y: np.ndarray) -> float:
+    """
+    Calculates mutual information between two binary variables.
+    
+    :param x: First binary variable
+    :type x: np.ndarray
+    :param y: Second binary variable
+    :type y: np.ndarray
+    :returns: Mutual information value
+    :rtype: float
+    """
+    contingency = contingency_table(x, y)
+    n = len(x)
+    p_joint = contingency / n
+    
+    p_x = p_joint.sum(axis=1)
+    p_y = p_joint.sum(axis=0)
+    
+    mi = 0
+    for i in range(2):
+        for j in range(2):
+            if p_joint[i, j] > 0:
+                mi += p_joint[i, j] * np.log2(p_joint[i, j] / (p_x[i] * p_y[j]))
+    
+    return mi
+
+def jaccard_index(x: np.ndarray, y: np.ndarray) -> float:
+    """
+    Calculates Jaccard Index between two binary variables.
+    
+    :param x: First binary variable
+    :type x: np.ndarray
+    :param y: Second binary variable
+    :type y: np.ndarray
+    :returns: Jaccard Index value
+    :rtype: float
+    """
+    intersection = np.sum((x == 1) & (y == 1))
+    union = np.sum((x == 1) | (y == 1))
+    
+    if union == 0: return 0
+    
+    return intersection / union
+
+def chi_squared_statistic(x: np.ndarray, y: np.ndarray) -> float:
+    """
+    Calculates Pearson's chi-squared statistic.
+    
+    :param x: First binary variable
+    :type x: np.ndarray
+    :param y: Second binary variable
+    :type y: np.ndarray
+    :returns: Chi-squared statistic
+    :rtype: float
+    """
+    contingency = contingency_table(x, y)
+    chi2_stat, _, _, _ = chi2_contingency(contingency)
+    return chi2_stat
+
+def contingency_table(x: np.ndarray, y: np.ndarray) -> np.ndarray:
+    """
+    Creates 2x2 contingency table for two binary variables.
+    
+    :param x: First binary variable
+    :type x: np.ndarray
+    :param y: Second binary variable
+    :type y: np.ndarray
+    :returns: 2x2 contingency table
+    :rtype: np.ndarray
+    """
+    table = np.zeros((2, 2))
+    table[0, 0] = np.sum((x == 0) & (y == 0))
+    table[0, 1] = np.sum((x == 0) & (y == 1))
+    table[1, 0] = np.sum((x == 1) & (y == 0))
+    table[1, 1] = np.sum((x == 1) & (y == 1))
+    return table
+
+def permutation_test(x: np.ndarray, y: np.ndarray, statistic_func, 
+                    n_permutations: int) -> tuple:
+    """
+    Performs permutation test to calculate p-value for given statistic.
+    
+    :param x: First binary variable
+    :type x: np.ndarray
+    :param y: Second binary variable
+    :type y: np.ndarray
+    :param statistic_func: Function to calculate test statistic
+    :type statistic_func: function
+    :param n_permutations: Number of permutations
+    :type n_permutations: int
+    :returns: Tuple of observed statistic, p-value, null distribution
+    :rtype: tuple
+    """
+    observed_stat = statistic_func(x, y)
+    
+    null_dist = np.zeros(n_permutations)
+    
+    for i in range(n_permutations):
+        y_permuted = np.random.permutation(y)
+        null_dist[i] = statistic_func(x, y_permuted)
+    
+    c = np.sum(null_dist >= observed_stat)
+    p_value = (c + 1) / (n_permutations + 1)
+    
+    return observed_stat, p_value, null_dist
+
+def chi_squared_parametric(x: np.ndarray, y: np.ndarray) -> tuple:
+    """
+    Performs Pearson's chi-squared test using parametric distribution.
+    
+    :param x: First binary variable
+    :type x: np.ndarray
+    :param y: Second binary variable
+    :type y: np.ndarray
+    :returns: Tuple of chi-squared statistic, p-value
+    :rtype: tuple
+    """
+    contingency = contingency_table(x, y)
+    chi2_stat, p_value, _, _ = chi2_contingency(contingency)
+    
+    return chi2_stat, p_value
+\end{verbatim}
+
+\begin{center}
+\textbf{Figure 1:} Core functions for computing statistics and performing permutation tests.
+\end{center}
+
+The computed test statistics and corresponding p-values:
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Statistic} & \textbf{Value} & \textbf{P-value} \\
+\hline
+Mutual Information & 0.047 & 0.0027 \\
+\hline
+Jaccard Index & 0.000 & 1.0000 \\
+\hline
+Pearson's $\chi^2$ & 6.456 & 0.0111 \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{center}
+\textbf{Figure 2:} Test statistics and p-values for the two genomic variants in p1a.csv.
+\end{center}
+
+I didn't see a example-figure1.jpg anywhere for reference, but a sorted scatter plot sounds straightforward enough for MI and JC, below are hte plots for each, with each of the observed statistics marked with a dashed red line.
+
+\begin{center}
+    \includegraphics[width=0.95\textwidth]{figures/mi_permutation_test.png}
+  
+    \textbf{Figure 3:} Permutation test results for Mutual Information.
+\end{center}
+
+\begin{center}
+    \includegraphics[width=0.95\textwidth]{figures/ji_permutation_test.png}
+  
+    \textbf{Figure 4:} Permutation test results for Jaccard Index.
+\end{center}
+
+The MI of 0.047 is small, indicating that there is a small, but statistically detectable ($ p=0.0027 $), amount of information shared between the variables; they are just a bit telling of each other. The chi-squared also shows a weak yet significant ($ p=0.0111 $) association between the two variables with a value of 6.456, varying from what we ought to expect under independence. The Jaccard on the other hand, shows no association and upon inspection of the data following this result, I realized there is no occurrence of (1,1) in the data, yielding a value of 0 and a p value of 1.\\
+
+This means the statistics do not all agree, but there is good reason for this; it's a demonstration of the fact that these statistics capture different aspects of association between two variables, and in this specific case, we have a set of data that doesn't align well necessarily with how these statistics are defined. Jaccard is specifically helpful in the case where the is a relation between the (1,1) class and the union in the contingency table, but in this example, it is likely that the detection of any association is a result of the samples being mutually exclusive rather than the variables ever both being 1 at the same time. For this reason, MI and $ \chi_2 $ are equipped to identify the occurrence of one variable given the result of another and the difference between the expected and observed values under independence, while the Jaccard is left blind to the connection by its construction.
 
 \newpage
